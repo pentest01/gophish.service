@@ -6,12 +6,15 @@
 
 [Unit]
 Description=gophish
+StartLimitIntervalSec=300
+StartLimitBurst=5
 After=network.target
 
 [Service]
 Type=simple
-ExecStart=/opt/gophish/gophish
-Restart=always
+ExecStart=/bin/sh -c "/opt/gophish/gophish >>${STDOUT} 2>>${STDERR}"
+Restart=on-failure
+RestartSec=1s
 
 User=gophish
 Environment='STDOUT=/var/log/gophish/gophish.log'
